@@ -1,5 +1,5 @@
 import { access, readFileSync } from "fs";
-const input = readFileSync('testinput', "utf-8").split('\n');
+const input = readFileSync('input', "utf-8").split('\n');
 
 //run npx ts-node index.ts 
 
@@ -19,20 +19,16 @@ const isDecreasing = (value: number, index: number, arr: number[]) : boolean => 
 }
 
 const isSafe = (report: number[]) => {
-    console.log('*************** ITEM *****************', report);
     const validReport = report.every((level, index, arr) => isBetweenDelimiters(level, arr[index + 1])) && (report.every(isIncreasing) || report.every(isDecreasing));
     if(validReport) return validReport;
     
     // do check
-    console.log('---------- extra check -----------');
     const validAfterAll = report.some((value, index) => {
         const copy = structuredClone(report);
         copy.splice(index, 1);
 
         const isLinear = (copy.every(isIncreasing) || copy.every(isDecreasing));
         const validBetweenDelimiters = copy.every((copyLevel, copyIndex, copyArray) => isBetweenDelimiters(copyLevel, copyArray[copyIndex + 1]))
-
-        console.log(copy, 'isLinear', isLinear , '// validBetweenDelimiters', validBetweenDelimiters, 'result: ', isLinear && validBetweenDelimiters)
 
         return isLinear && validBetweenDelimiters;
     })
