@@ -1,5 +1,4 @@
-import { dir } from "console";
-import { access, readFileSync } from "fs";
+import { readFileSync } from "fs";
 let matrix = readFileSync('input', "utf-8").split('\n')?.map(x => x.split(''));
 // npx ts-node index.ts 
 
@@ -16,12 +15,13 @@ const findCoordinates = (matrix: string[][], target: string): number[] | null =>
     return null;
 }
 
+const startGuard : Direction = '^';
 let guard : Direction = '^';
 let guardIsPatrolling = true;
 
+const startGuardPosition = findCoordinates(matrix, guard) ?? [0, 0]; // TODO FIND INITIAL BASED ON MATRIX CHAR '^'
 let guardPosition : number[] = findCoordinates(matrix, guard) ?? [0, 0]; // TODO FIND INITIAL BASED ON MATRIX CHAR '^'
 let totalDistinctPositions = 0;
-
 
 function avoidObstacle(currentDirection: Direction) : Direction {
     if(currentDirection === '^') return '>';
@@ -37,16 +37,16 @@ function getNextPosition(currentPosition: number[], direction: Direction) {
     else return [currentPosition[0], currentPosition[1] + 1]; 
 }
 
-const visitedPositions = new Set<string>([]);
 
 
-function attemptedInception(startPosition : number[], startDirection: Direction){
-    let position = startPosition;
-    let direction = startDirection;
+function attemptedInception(curr : number[], dir: Direction){
+
+    let position = structuredClone(startGuardPosition);
+    let direction = structuredClone(startGuard);
     let goingStrong = true;
 
-    // const visitedPositions = new Set<string>([]);
-    visitedPositions.clear()
+    const visitedPositions = new Set<string>([]);
+
     let isLoop = false;
 
     do {
