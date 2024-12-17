@@ -16,12 +16,15 @@ console.log('data', slots);
 let checksum = 0;
 
 
-slots.forEach((element, index) => {
+// slots.forEach((element, index) => {
+for (let index = 0; index < slots.length; index++) {
     // console.log('***********************');
     try {
-        const lastSlot = structuredClone(slots).reverse()[0];
+        // const lastSlot = structuredClone(slots).reverse()[0];
+        const lastSlot = slots.at(-1);
+
         const moveToIndex = slots.findIndex(x => x === undefined);
-        if(moveToIndex === -1) return slots;
+        if(moveToIndex === -1) break;
         console.log('slots length', slots.length);
         // console.log('lastSlot',lastSlot, moveToIndex);
         // console.log('moveToIndex', moveToIndex);
@@ -35,7 +38,7 @@ slots.forEach((element, index) => {
     } catch (error) {
         console.log('something happened',  error);
     }
-});
+};
 
 const total = slots.reduce((total, current, currindex) => {
     return total += current * currindex;
